@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  /* isolation: isolate; */
+  margin: 0;
+  background: #0c0a09; /* Deep charcoal base */
+  color: #f5f5f4;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 1. Dark Vignette / Edges Layer */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* Fixed: Prevents overlay from blocking mouse interactions */
+  z-index: 2;
+  background: radial-gradient(
+    circle at center,
+    transparent 5%,
+    rgba(103, 1, 1, 0.6) 80%,
+    rgb(11, 11, 11) 100%
+  );
+}
+
+/* 2. Global Grain Layer */
+body::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9999; /* Sit on top of everything */
+  background: url("/noise.svg") repeat;
+  filter: contrast(180%) brightness(100%);
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  animation: grain 0.3s steps(5) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5%, -10%); }
+  40% { transform: translate(-15%, 5%); }
+  60% { transform: translate(7%, -25%); }
+  80% { transform: translate(-5%, 15%); }
+}
+
+/* Custom Lens Magnifier Effect */
+.magnify-char {
+  display: inline-block;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0.13, 2), filter 0.15s ease;
+}
+
+.magnify-char:hover {
+  transform: scale(2) translateY(-2px);
+  filter: contrast(150%) brightness(130%);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* Magnifying Lens Outer Glass Frame */
+.magnify-lens {
+  backdrop-filter: brightness(120%) contrast(115%);
+  -webkit-backdrop-filter: brightness(120%) contrast(115%);
+  
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* Custom ambient glow for verse text (Monochrome White/Silver) */
+.glow-text {
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(200, 200, 200, 0.4);
+  transition: all 0.2s ease-out;
+}
+
+.glow-text:hover {
+  transform: scale(1.75) translateY(-2px);
+  text-shadow: 
+    0 0 12px rgba(255, 255, 255, 1),
+    0 0 30px rgba(220, 220, 220, 0.8),
+    0 0 45px rgba(255, 255, 255, 0.6);
+}
+
+/* Letter Dance Jitter Animation */
+@keyframes letterDance {
+  0% {
+    transform: scale(1.8) translateY(-4px) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.95) translateY(-8px) rotate(-6deg);
+  }
+  50% {
+    transform: scale(1.85) translateY(-3px) rotate(5deg);
+  }
+  75% {
+    transform: scale(2) translateY(-9px) rotate(-4deg);
+  }
+  100% {
+    transform: scale(1.8) translateY(-4px) rotate(0deg);
+  }
+}
+
+.dancing-char {
+  display: inline-block;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0.13, 2), text-shadow 0.2s ease;
+}
+
+.dancing-char:hover {
+  animation: letterDance 0.4s ease-in-out infinite alternate;
+  color: #ffffff;
+  text-shadow: 
+    0 0 12px rgba(255, 255, 255, 1),
+    0 0 25px rgba(200, 200, 200, 0.7);
+  cursor: none;
+}
+
+/* Ensure smooth pointer hiding across all nested elements */
+.custom-cursor-area,
+.custom-cursor-area * {
+  cursor: none !important;
+}
