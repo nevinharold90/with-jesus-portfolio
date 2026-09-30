@@ -71,7 +71,4 @@ export default defineConfig([
     },
   },
 ])
-
 ```
-=======
-# with-jesus-portfolio
